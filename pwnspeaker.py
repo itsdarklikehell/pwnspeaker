@@ -301,7 +301,3 @@ class Pwnspeak(plugins.Plugin):
         engine.runAndWait()
         engine.stop()
         pass
-
-engine.say("I am awakened!")
-engine.runAndWait()
-engine.stop()
