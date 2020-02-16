@@ -9,3 +9,8 @@ Copy the pwnspeaker.py file to your custom plugins dir and add the following to 
 
 pwnspeaker:
     enabled: true
+
+Copy the pwnassistant.py file to your custom plugins dir and add the following to your config.yaml file
+
+pwnassistant:
+    enabled: true
