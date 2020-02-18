@@ -183,7 +183,7 @@ while True:
                 speak("I've made a note of that.")
                 
         PWN_STRS = ["handshakes","handshake","what are you dooing"]
-        for phrase in PWN_STRS;
+        for phrase in PWN_STRS:
         	if prase in text:
         		speak("Whatsup dude?")
 
