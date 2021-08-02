@@ -10,7 +10,7 @@ Copy the pwnspeaker.py file to your custom plugins dir and add the following to 
 pwnspeaker:
     enabled: true
 
-pip3 install pytz google-api-python-client
+pip3 install pytz google-api-python-client google-auth-oauthlib
 
 Copy the pwnassistant.py file to your custom plugins dir and add the following to your config.yaml file:
 
