@@ -31,7 +31,17 @@ class Pwnspeak(plugins.Plugin):
     __version__ = '1.0.0'
     __license__ = 'GPL3'
     __description__ = 'An Pwnspeak plugin for pwnagotchi that implements all the available callbacks.'
-
+    __name__ = 'Pwnspeak'
+    __help__ = """
+-this plugin needs a installed and working audio DAC HAT, USB-Soundcard or a connected bt-headset/headphone for audio output, like https://www.raspiaudio.com/
+-for enable text2speech on raspberry-pi-zero with debian buster to speak the SSID on handshake and others, you need to install "pico2wave" as root:
+⋅⋅⋅wget http://archive.raspberrypi.org/debian/pool/main/s/svox/libttspico-utils_1.0+git20130326-3+rpi1_armhf.deb
+⋅⋅⋅wget http://archive.raspberrypi.org/debian/pool/main/s/svox/libttspico0_1.0+git20130326-3+rpi1_armhf.deb
+⋅⋅⋅apt-get install -f ./libttspico0_1.0+git20130326-3+rpi1_armhf.deb ./libttspico-utils_1.0+git20130326-3+rpi1_armhf.deb
+⋅⋅⋅# test:
+⋅⋅⋅pico2wave -w lookdave.wav "Look Dave, I can see you're really upset about this." && aplay lookdave.wav
+-with device https://www.raspiaudio.com/promo you can use the yellow button to shutdown your raspberry-pi. read sound/shutdown_button.py for help
+"""
     def __init__(self):
         logging.debug("Pwnspeak plugin created")
         engine.say("Pwnspeak plugin created")
@@ -140,15 +150,15 @@ class Pwnspeak(plugins.Plugin):
 
     # called after the AI completed a training epoch
     def on_ai_training_step(self, agent, _locals, _globals):
-    	#logging.debug("The AI has completed training for an epoch.")
-    	#engine.say("I have completed my training for the last epoch.")
-    	#engine.runAndWait()
-    	#engine.stop()
+    	logging.debug("The AI has completed training for an epoch.")
+    	engine.say("I have completed my training for the last epoch.")
+    	engine.runAndWait()
+    	engine.stop()
     	pass
 
     # called when the AI has done training
     def on_ai_training_end(self, agent):
-    	logging.debug("The AI is done with training")
+    	logging.debug("The AI is done with training.")
     	engine.say("I have finished my training.")
     	engine.runAndWait()
     	engine.stop()
@@ -157,7 +167,7 @@ class Pwnspeak(plugins.Plugin):
     # called when the AI got the best reward so far
     def on_ai_best_reward(self, agent, reward):
         logging.debug("The AI just got its best reward so far.")
-        engine.say("Best day evah!")
+        engine.say("I just got my best reward so far, this is my best day ever!")
         engine.runAndWait()
         engine.stop()
         pass
@@ -165,15 +175,15 @@ class Pwnspeak(plugins.Plugin):
     # called when the AI got the worst reward so far
     def on_ai_worst_reward(self, agent, reward):
         logging.debug("The AI just got its worst reward so far.")
-        engine.say("I just got the worst reward so far")
+        engine.say("I just got the worst reward so far, my life sucks!")
         engine.runAndWait()
         engine.stop()
         pass
 
     # called when a non overlapping wifi channel is found to be free
     def on_free_channel(self, agent, channel):
-        logging.debug("I just found a non overlapping wifi channel that is free")
-        engine.say("I just found a non overlapping wifi channel that is free")
+        logging.debug("I just found a non overlapping wifi channel that is free.")
+        engine.say("I just found a non overlapping wifi channel that is free.")
         engine.runAndWait()
         engine.stop()
         pass
@@ -220,35 +230,35 @@ class Pwnspeak(plugins.Plugin):
 
     # called when the agent is waiting for t seconds
     def on_wait(self, agent, t):
-        logging.debug("Waiting for N seconds...")
-        engine.say("Waiting for N seconds...")
+        logging.debug("Waiting for a few seconds...")
+        engine.say("Waiting for a few seconds...")
         engine.runAndWait()
         engine.stop()
         pass
 
     # called when the agent is sleeping for t seconds
     def on_sleep(self, agent, t):
-        logging.debug("Sleeping for N seconds ...")
-        engine.say("Sleeping for N seconds...")
+        logging.debug("Sleeping for a few seconds ...")
+        engine.say("Sleeping for a few seconds...")
         engine.runAndWait()
         engine.stop()
         pass
 
     # called when the agent refreshed its access points list
     def on_wifi_update(self, agent, access_points):
-        logging.debug("I have refreshed my list of access points...")
-        engine.say("I have refreshed my list of access points...")
-        engine.runAndWait()
-        engine.stop()
+        #logging.debug("I have refreshed my list of access points...")
+        #engine.say("I have refreshed my list of access points...")
+        #engine.runAndWait()
+        #engine.stop()
         pass
 
     # called when the agent refreshed an unfiltered access point list
     # this list contains all access points that were detected BEFORE filtering
     def on_unfiltered_ap_list(self, agent, access_points):
-        logging.debug("I have refreshed my list of unfilteted access points...")
-        engine.say("I have refreshed my list of unfiltered access points...")
-        engine.runAndWait()
-        engine.stop()
+        #logging.debug("I have refreshed my list of unfilteted access points...")
+        #engine.say("I have refreshed my list of unfiltered access points...")
+        #engine.runAndWait()
+        #engine.stop()
         pass
 
     # called when the agent is sending an association frame
@@ -268,9 +278,9 @@ class Pwnspeak(plugins.Plugin):
 
     # callend when the agent is tuning on a specific channel
     def on_channel_hop(self, agent, channel):
-        engine.say("I am running on channel C...")
-        engine.runAndWait()
-        engine.stop()
+        #engine.say("I am running on channel C...")
+        #engine.runAndWait()
+        #engine.stop()
         pass
 
     # called when a new handshake is captured, access_point and client_station are json objects
