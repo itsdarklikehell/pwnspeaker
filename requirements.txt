@@ -1,0 +1,9 @@
+# pwnspeaker (TTS)
+pyttsx3
+pytz
+
+# pwnassistant (Google Calendar + speech)
+google-api-python-client
+google-auth-oauthlib
+SpeechRecognition
+pyaudio; sys_platform == "linux"
