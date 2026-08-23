@@ -6,25 +6,19 @@ from pwnagotchi.ui.components import LabeledValue
 from pwnagotchi.ui.view import BLACK
 import pwnagotchi.ui.fonts as fonts
 
-# object creation
-engine = pyttsx3.init()
+# object creation (lazy: init at first use, module-level init crashes
+# on systems without an audio device, e.g. CI or headless setups)
+engine = None
 
-# getting details of current speaking rate
-rate = engine.getProperty('rate')
-# setting up new voice rate
-#engine.setProperty('rate', 125)
 
-#getting to know current volume level (min=0 and max=1)
-volume = engine.getProperty('volume')
-# setting up volume level  between 0 and 1
-#engine.setProperty('volume',1.0)
-
-#getting details of current voice
-voices = engine.getProperty('voices')
-#changing index, changes voices. o for male
-#engine.setProperty('voice', voices[0].id)
-#changing index, changes voices. 1 for female
-#engine.setProperty('voice', voices[1].id)
+def _get_engine():
+    global engine
+    if engine is None:
+        engine = pyttsx3.init()
+        # getting details of current speaking rate
+        rate = engine.getProperty('rate')
+        volume = engine.getProperty('volume')
+    return engine
 
 class Pwnspeak(plugins.Plugin):
     __author__ = 'bauke.molenaar@gmail.com'
@@ -44,50 +38,50 @@ class Pwnspeak(plugins.Plugin):
 """
     def __init__(self):
         logging.debug("Pwnspeak plugin created")
-        engine.say("Pwnspeak plugin created")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("Pwnspeak plugin created")
+        _get_engine().runAndWait()
+        _get_engine().stop()
 
     # called when http://<host>:<port>/plugins/<plugin>/ is called
     # must return a html page
     # IMPORTANT: If you use "POST"s, add a csrf-token (via csrf_token() and render_template_string)
     def on_webhook(self, path, request):
-        engine.say("Webhook clicked!")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("Webhook clicked!")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the plugin is loaded
     def on_loaded(self):
         logging.debug("Pwnspeak plugin loaded")
-        engine.say("Pwnspeak plugin loaded")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("Pwnspeak plugin loaded")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called before the plugin is unloaded
     def on_unload(self, ui):
         logging.debug("Pwnspeak plugin unloaded")
-        engine.say("Pwnspeak plugin unloaded")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("Pwnspeak plugin unloaded")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called hen there's internet connectivity
     def on_internet_available(self, agent):
     	logging.debug("I now have internet.")
-    	engine.say("I have detected a internet connection")
-    	engine.runAndWait()
-    	engine.stop()
+    	_get_engine().say("I have detected a internet connection")
+    	_get_engine().runAndWait()
+    	_get_engine().stop()
     	pass
 
     # called to setup the ui elements
     def on_ui_setup(self, ui):
         # add custom UI elements
         logging.debug("Setting up UI elements")
-        engine.say("Setting up UI elements")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("Setting up UI elements")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         #ui.add_element('ups', LabeledValue(color=BLACK, label='UPS', value='0%/0V', position=(ui.width() / 2 - 25, 0), label_font=fonts.Bold, text_font=fonts.Medium))
         pass
 
@@ -114,9 +108,9 @@ class Pwnspeak(plugins.Plugin):
     # called when everything is ready and the main loop is about to start
     def on_ready(self, agent):
         logging.info("unit is ready!")
-        engine.say("The unit is ready!")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("The unit is ready!")
+        _get_engine().runAndWait()
+        _get_engine().stop()
 
         # you can run custom bettercap commands if you want
         #   agent.run('ble.recon on')
@@ -127,121 +121,121 @@ class Pwnspeak(plugins.Plugin):
     # called when the AI finished loading
     def on_ai_ready(self, agent):
     	logging.debug("The AI is finished loading")
-    	engine.say("My AI is finished loading, I now have become sentient!")
-    	engine.runAndWait()
-    	engine.stop()
+    	_get_engine().say("My AI is finished loading, I now have become sentient!")
+    	_get_engine().runAndWait()
+    	_get_engine().stop()
     	pass
 
     # called when the AI finds a new set of parameters
     def on_ai_policy(self, agent, policy):
     	logging.debug("I have found a new set of parameters.")
-    	engine.say("I have found a new set of parameters.")
-    	engine.runAndWait()
-    	engine.stop()
+    	_get_engine().say("I have found a new set of parameters.")
+    	_get_engine().runAndWait()
+    	_get_engine().stop()
     	pass
 
     # called when the AI starts training for a given number of epochs
     def on_ai_training_start(self, agent, epochs):
     	logging.debug("The AI has started training.")
-    	engine.say("I have started training.")
-    	engine.runAndWait()
-    	engine.stop()
+    	_get_engine().say("I have started training.")
+    	_get_engine().runAndWait()
+    	_get_engine().stop()
     	pass
 
     # called after the AI completed a training epoch
     def on_ai_training_step(self, agent, _locals, _globals):
     	logging.debug("The AI has completed training for an epoch.")
-    	engine.say("I have completed my training for the last epoch.")
-    	engine.runAndWait()
-    	engine.stop()
+    	_get_engine().say("I have completed my training for the last epoch.")
+    	_get_engine().runAndWait()
+    	_get_engine().stop()
     	pass
 
     # called when the AI has done training
     def on_ai_training_end(self, agent):
     	logging.debug("The AI is done with training.")
-    	engine.say("I have finished my training.")
-    	engine.runAndWait()
-    	engine.stop()
+    	_get_engine().say("I have finished my training.")
+    	_get_engine().runAndWait()
+    	_get_engine().stop()
     	pass
 
     # called when the AI got the best reward so far
     def on_ai_best_reward(self, agent, reward):
         logging.debug("The AI just got its best reward so far.")
-        engine.say("I just got my best reward so far, this is my best day ever!")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I just got my best reward so far, this is my best day ever!")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the AI got the worst reward so far
     def on_ai_worst_reward(self, agent, reward):
         logging.debug("The AI just got its worst reward so far.")
-        engine.say("I just got the worst reward so far, my life sucks!")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I just got the worst reward so far, my life sucks!")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when a non overlapping wifi channel is found to be free
     def on_free_channel(self, agent, channel):
         logging.debug("I just found a non overlapping wifi channel that is free.")
-        engine.say("I just found a non overlapping wifi channel that is free.")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I just found a non overlapping wifi channel that is free.")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the status is set to bored
     def on_bored(self, agent):
         logging.debug("I am so bored right now...")
-        engine.say("I am so bored right now...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I am so bored right now...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the status is set to sad
     def on_sad(self, agent):
         logging.debug("I am so sad...")
-        engine.say("I am so sad...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I am so sad...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the status is set to excited
     def on_excited(self, agent):
         logging.debug("I am so excited...")
-        engine.say("I am so excited...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I am so excited...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the status is set to lonely
     def on_lonely(self, agent):
         logging.debug("I am so loneley, nobody wants to play with me...")
-        engine.say("I am so lonenly, nobody wants to play wiith me...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I am so lonenly, nobody wants to play wiith me...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the agent is rebooting the board
     def on_rebooting(self, agent):
         logging.debug("I am going to reboot now.")
-        engine.say("I am going to reboot now.")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I am going to reboot now.")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the agent is waiting for t seconds
     def on_wait(self, agent, t):
         logging.debug("Waiting for a few seconds...")
-        engine.say("Waiting for a few seconds...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("Waiting for a few seconds...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the agent is sleeping for t seconds
     def on_sleep(self, agent, t):
         logging.debug("Sleeping for a few seconds ...")
-        engine.say("Sleeping for a few seconds...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("Sleeping for a few seconds...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the agent refreshed its access points list
@@ -264,16 +258,16 @@ class Pwnspeak(plugins.Plugin):
     # called when the agent is sending an association frame
     def on_association(self, agent, access_point):
         logging.debug("I am sending an association frame now...")
-        engine.say("I am sending an association fame now...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I am sending an association fame now...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when the agent is deauthenticating a client station from an AP
     def on_deauthentication(self, agent, access_point, client_station):
-        engine.say("I am deauthenticating a client from its access point...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I am deauthenticating a client from its access point...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # callend when the agent is tuning on a specific channel
@@ -286,28 +280,28 @@ class Pwnspeak(plugins.Plugin):
     # called when a new handshake is captured, access_point and client_station are json objects
     # if the agent could match the BSSIDs to the current list, otherwise they are just the strings of the BSSIDs
     def on_handshake(self, agent, filename, access_point, client_station):
-        engine.say("I have captured a handshake...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I have captured a handshake...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when an epoch is over (where an epoch is a single loop of the main algorithm)
     def on_epoch(self, agent, epoch, epoch_data):
-        engine.say("I have completed a whole epoch...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I have completed a whole epoch...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when a new peer is detected
     def on_peer_detected(self, agent, peer):
-        engine.say("I have found a new peer...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I have found a new peer...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
 
     # called when a known peer is lost
     def on_peer_lost(self, agent, peer):
-        engine.say("I have lost contact with a peer...")
-        engine.runAndWait()
-        engine.stop()
+        _get_engine().say("I have lost contact with a peer...")
+        _get_engine().runAndWait()
+        _get_engine().stop()
         pass
