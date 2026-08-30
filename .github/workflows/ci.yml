@@ -1,0 +1,10 @@
+name: CI
+on:
+  push:
+    branches: ["master","main","master"]
+  pull_request:
+    branches: ["master","main","master"]
+  workflow_dispatch:
+jobs:
+  ci:
+    uses: itsdarklikehell/ci-templates/.github/workflows/ci-python.yml@v1
