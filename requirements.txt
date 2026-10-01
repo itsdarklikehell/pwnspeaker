@@ -1,8 +1,8 @@
 # pwnspeaker (TTS)
 pyttsx3
-pytz
+pytz==2026.4
 
 # pwnassistant (Google Calendar + speech)
-google-api-python-client
-google-auth-oauthlib
+google-api-python-client==2.201.0
+google-auth-oauthlib==1.5.0
 SpeechRecognition
