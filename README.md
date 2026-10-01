@@ -1,5 +1,9 @@
 # pwnspeaker
 
+<img src="https://img.shields.io/github/stars/itsdarklikehell/pwnspeaker?style=flat-square&color=blue" alt="Stars">
+<img src="https://img.shields.io/github/forks/itsdarklikehell/pwnspeaker?style=flat-square&color=green" alt="Forks">
+<img src="https://img.shields.io/github/license/itsdarklikehell/pwnspeaker?style=flat-square" alt="License">
+
 Two pwnagotchi plugins:
 
 - **pwnspeaker.py** — text-to-speech: lets your pwnagotchi speak.
