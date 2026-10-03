@@ -151,7 +151,7 @@ def note(text):
     with open(file_name, "w") as f:
         f.write(text)
 
-    subprocess.Popen(["notepad.exe", file_name])
+    subprocess.Popen(["notepad.exe", file_name], timeout=30)
 	
 WAKE = "hey rupert"
 SERVICE = authenticate_google()
